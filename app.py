@@ -23,7 +23,7 @@ KNOWN_SKILLS = [
 
 
 st.set_page_config(
-    page_title="AI Resume Analyzer",
+    page_title="HireLens-AI Resume Analyzer",
     page_icon="📄",
     layout="wide"
 )
@@ -145,7 +145,7 @@ def generate_tips(score: int, missing_skills: List[str], resume_text: str) -> Li
         )
 
     return suggestions
-st.title("📄 AI Resume Analyzer")
+st.title("📄 HireLens-AI Resume Analyzer")
 st.write("Upload your resume and paste a job description to check how well they match.")
 
 resume_file = st.file_uploader("Upload your Resume PDF", type=["pdf"])
