@@ -141,5 +141,6 @@ def generate_tips(score: int, missing_skills: List[str], resume_text: str) -> Li
         # Just show the first 8 to avoid clutter
         preview = ", ".join(missing_skills[:8])
         suggestions.append(
-            "Consider adding these missing skills if you actually have experience with them: "
-            + preview +
+    "Consider adding these missing skills if you actually have experience with them: "
+    + preview
+)
