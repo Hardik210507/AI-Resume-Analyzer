@@ -138,9 +138,10 @@ def generate_tips(score: int, missing_skills: List[str], resume_text: str) -> Li
         suggestions.append("Good match! Your resume is already well aligned with this job description.")
 
     if missing_skills:
-        # Just show the first 8 to avoid clutter
         preview = ", ".join(missing_skills[:8])
         suggestions.append(
-    "Consider adding these missing skills if you actually have experience with them: "
-    + preview
-)
+            "Consider adding these missing skills if you actually have experience with them: "
+            + preview
+        )
+
+    return suggestions
