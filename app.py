@@ -145,3 +145,61 @@ def generate_tips(score: int, missing_skills: List[str], resume_text: str) -> Li
         )
 
     return suggestions
+st.title("📄 AI Resume Analyzer")
+st.write("Upload your resume and paste a job description to check how well they match.")
+
+resume_file = st.file_uploader("Upload your Resume PDF", type=["pdf"])
+
+job_description = st.text_area(
+    "Paste Job Description",
+    height=250,
+    placeholder="Paste the job description here..."
+)
+
+if st.button("Analyze Resume"):
+    if resume_file is None:
+        st.warning("Please upload your resume PDF.")
+    elif not job_description.strip():
+        st.warning("Please paste the job description.")
+    else:
+        resume_text = get_pdf_text(resume_file)
+
+        if not resume_text:
+            st.error("Could not extract text from the resume. Try another PDF.")
+        else:
+            similarity = calc_similarity(resume_text, job_description)
+
+            resume_skills = detect_skills(resume_text)
+            jd_skills = detect_skills(job_description)
+
+            missing_skills = find_missing(resume_skills, jd_skills)
+            ats_score = calculate_score(similarity, resume_skills, jd_skills)
+            tips = generate_tips(ats_score, missing_skills, resume_text)
+
+            st.subheader("📊 Results")
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.metric("ATS Score", f"{ats_score}/100")
+
+            with col2:
+                st.metric("Text Similarity", f"{similarity}%")
+
+            st.progress(ats_score / 100)
+
+            st.subheader("✅ Skills Found in Resume")
+            if resume_skills:
+                st.write(", ".join(resume_skills))
+            else:
+                st.write("No known skills detected.")
+
+            st.subheader("❌ Missing Skills from Job Description")
+            if missing_skills:
+                st.write(", ".join(missing_skills))
+            else:
+                st.write("No major missing skills found.")
+
+            st.subheader("💡 Suggestions")
+            for tip in tips:
+                st.write("- " + tip)
